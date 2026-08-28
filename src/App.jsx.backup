@@ -1,0 +1,193 @@
+import {useEffect,useState} from "react";
+import "./style.css";
+
+const agents=[
+ ["🔎","Lead Hunter","SCANNING"],
+ ["🧠","Research AI","ANALYZING"],
+ ["✍️","Content AI","CREATING"],
+ ["💬","Sales AI","QUALIFYING"],
+ ["📋","CRM AI","UPDATING"],
+ ["📈","Growth AI","OPTIMIZING"],
+ ["💰","Finance AI","TRACKING"],
+ ["🛠️","DevOps AI","BUILDING"]
+];
+
+const events=[
+ "New lead discovered",
+ "Lead qualified",
+ "AI generated personalized offer",
+ "Sales opportunity created",
+ "CRM updated",
+ "Follow-up scheduled",
+ "Customer converted",
+ "Subscription activated"
+];
+
+export default function App(){
+ const [revenue,setRevenue]=useState(4280);
+ const [leads,setLeads]=useState(127);
+ const [customers,setCustomers]=useState(43);
+ const [active,setActive]=useState(6);
+ const [feed,setFeed]=useState([]);
+ const [tick,setTick]=useState(0);
+
+ useEffect(()=>{
+   const timer=setInterval(()=>{
+     setTick(t=>t+1);
+     const e=events[Math.floor(Math.random()*events.length)];
+     setFeed(f=>[
+       {id:Date.now(),text:e},
+       ...f
+     ].slice(0,7));
+
+     if(Math.random()>.25)setLeads(x=>x+1);
+     if(Math.random()>.88){
+       setCustomers(x=>x+1);
+       setRevenue(x=>x+49);
+     }
+   },2200);
+   return()=>clearInterval(timer);
+ },[]);
+
+ return <div className="os">
+
+  <header>
+   <div className="brand">
+    <div className="hermes">H</div>
+    <div>
+     <b>HERMES</b>
+     <span>AI COMPANY OS</span>
+    </div>
+   </div>
+
+   <div className="system">
+    <i></i> ALL SYSTEMS OPERATIONAL
+   </div>
+  </header>
+
+  <section className="top">
+   <div>
+    <div className="eyebrow">AUTONOMOUS BUSINESS COMMAND CENTER</div>
+    <h1>Your business is <em>working.</em></h1>
+    <p>Hermes is coordinating your AI workforce 24/7.</p>
+   </div>
+   <div className="clock">LIVE<br/><strong>●</strong></div>
+  </section>
+
+  <section className="metrics">
+   <Metric title="TODAY'S REVENUE" value={`$${revenue.toLocaleString()}`} change="+12.8%"/>
+   <Metric title="ACTIVE LEADS" value={leads} change="+18 today"/>
+   <Metric title="CUSTOMERS" value={customers} change="+3 today"/>
+   <Metric title="AGENTS WORKING" value={`${active}/37`} change="AUTONOMOUS"/>
+   <Metric title="MRR" value="$18,740" change="+8.4%"/>
+  </section>
+
+  <section className="workspace">
+   <div className="workspaceHead">
+    <div>
+     <div className="eyebrow">LIVE SIMULATION</div>
+     <h2>AI Agent Workspace</h2>
+    </div>
+    <div className="pulse">● AGENTS ACTIVE</div>
+   </div>
+
+   <div className="world">
+
+    <div className="hermesStation">
+     <div className="robot">🧠</div>
+     <strong>HERMES</strong>
+     <small>CONDUCTOR</small>
+     <div className="screen">DELEGATING<br/>TASKS...</div>
+    </div>
+
+    {agents.map((a,i)=>
+      <Agent key={i} icon={a[0]} name={a[1]} status={a[2]} index={i}/>
+    )}
+
+    <div className="leadStream">
+      <div className="streamTitle">INCOMING LEADS</div>
+      <div className="particles">
+       {[1,2,3,4,5,6].map(i=><span key={i}>●</span>)}
+      </div>
+    </div>
+
+    <div className="moneyStream">
+      <div>REVENUE ENGINE</div>
+      <strong>💵 ───→ 💰 ───→ 🔄</strong>
+      <small>LEAD → CUSTOMER → RECURRING</small>
+    </div>
+
+   </div>
+  </section>
+
+  <section className="bottom">
+
+   <div className="panel">
+    <div className="panelTitle">LIVE ACTIVITY</div>
+    {feed.length===0&&<div className="empty">Waiting for agent activity...</div>}
+    {feed.map(x=>
+      <div className="activity" key={x.id}>
+       <span className="green">●</span>
+       <span>{x.text}</span>
+       <small>NOW</small>
+      </div>
+    )}
+   </div>
+
+   <div className="panel">
+    <div className="panelTitle">REVENUE FUNNEL</div>
+    <Funnel label="Visitors" value="8,421" width="100%"/>
+    <Funnel label="Leads" value={leads} width="72%"/>
+    <Funnel label="Qualified" value="64" width="48%"/>
+    <Funnel label="Customers" value={customers} width="31%"/>
+    <Funnel label="Recurring" value="$18,740 MRR" width="24%"/>
+   </div>
+
+   <div className="panel">
+    <div className="panelTitle">HERMES QUEUE</div>
+    <Queue text="Find new prospects" agent="Lead Hunter"/>
+    <Queue text="Analyze campaign" agent="Growth AI"/>
+    <Queue text="Prepare follow-ups" agent="Sales AI"/>
+    <Queue text="Update revenue model" agent="Finance AI"/>
+   </div>
+
+  </section>
+
+ </div>
+}
+
+function Metric({title,value,change}){
+ return <div className="metric">
+  <small>{title}</small>
+  <strong>{value}</strong>
+  <span>{change}</span>
+ </div>
+}
+
+function Agent({icon,name,status,index}){
+ return <div className={`agent agent${index}`}>
+  <div className="agentIcon">{icon}</div>
+  <strong>{name}</strong>
+  <small>● {status}</small>
+  <div className="desk">
+   <div className="monitor"></div>
+   <div className="keyboard"></div>
+  </div>
+  <div className="task">working...</div>
+ </div>
+}
+
+function Funnel({label,value,width}){
+ return <div className="funnel">
+  <div><span>{label}</span><b>{value}</b></div>
+  <div className="bar"><i style={{width}}></i></div>
+ </div>
+}
+
+function Queue({text,agent}){
+ return <div className="queue">
+  <span className="green">●</span>
+  <div><b>{text}</b><small>{agent}</small></div>
+  <em>RUNNING</em>
+ </div>
+}

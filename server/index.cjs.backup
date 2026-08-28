@@ -1,0 +1,26 @@
+const express=require("express"),cors=require("cors");
+const app=express(); app.use(cors()); app.use(express.json());
+
+const departments=[
+ {name:"Communications",agents:["Inbox Agent","Executive Assistant"]},
+ {name:"Sales",agents:["Lead Researcher","Sales Agent","CRM Agent"]},
+ {name:"Finance",agents:["Bookkeeper","Invoice Agent","Finance Analyst"]},
+ {name:"Clients",agents:["Client Success Agent","Support Agent"]},
+ {name:"Marketing",agents:["Content Agent","Social Agent","SEO Agent"]},
+ {name:"Growth",agents:["Growth Analyst","Funnel Agent","Analytics Agent"]},
+ {name:"Tech",agents:["Developer Agent","QA Agent","DevOps Agent"]}
+];
+
+const sops=[
+ {name:"Qualify New Lead",department:"Sales",mode:"autonomous",agent:"Lead Researcher",skills:["research","qualification","CRM"]},
+ {name:"Create Social Campaign",department:"Marketing",mode:"human-assisted",agent:"Social Agent",skills:["copywriting","social-media","analytics"]},
+ {name:"Process Invoice",department:"Finance",mode:"human-assisted",agent:"Bookkeeper",skills:["accounting","invoice-processing"]},
+ {name:"Resolve Client Request",department:"Clients",mode:"autonomous",agent:"Support Agent",skills:["support","knowledge-search"]},
+ {name:"Deploy Application",department:"Tech",mode:"human-assisted",agent:"DevOps Agent",skills:["docker","kubernetes","CI/CD"]}
+];
+
+app.get("/api/company",(req,res)=>res.json({name:"AI Company OS",departments,agents:departments.flatMap(d=>d.agents),sops}));
+app.post("/api/hermes",(req,res)=>res.json({agent:"Hermes",task:req.body.task,status:"delegated",plan:[
+ "Understand objective","Search company knowledge","Select specialist agent","Execute workflow","Verify result","Request human approval if required"
+]}));
+app.listen(4000,()=>console.log("AI Company OS API: http://localhost:4000"));
