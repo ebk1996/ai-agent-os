@@ -4,19 +4,26 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"node server/index.cjs\" \"vite\"",
+    "dev": "concurrently -n api,web -c cyan,magenta \"node server/index.cjs\" \"vite\"",
+    "start": "node server/index.cjs",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google/genai": "^2.19.0",
+    "bcryptjs": "^3.0.3",
     "concurrently": "^10.0.5",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
+    "esbuild": "^0.28.2",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.9.4",
+    "openai": "^7.8.0",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "stripe": "^22.6.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
