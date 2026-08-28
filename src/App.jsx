@@ -550,8 +550,16 @@ function Command(p) {
 
       {llm.paused && (
         <div className="banner bad">
-          Cloud LLM quota pause. Failed jobs will retry automatically. Gemini free tier is 20 requests/day per model.
-          Add Google AI billing, OpenAI credits, or XAI_API_KEY to keep the company moving.
+          Cloud LLM quota pause. Jobs will retry. Add a free Groq key (no card) at console.groq.com/keys or OpenRouter
+          at openrouter.ai/keys, or a working XAI_API_KEY.
+        </div>
+      )}
+
+      {(llm.missingFree || []).some((s) => s.id === "groq" || s.id === "openrouter") && (
+        <div className="banner ok">
+          More free LLM power: paste GROQ_API_KEY from console.groq.com/keys (no credit card, thousands of requests/day)
+          and/or OPENROUTER_API_KEY from openrouter.ai/keys. Mistral (France) and DeepSeek (China) work the same way.
+          Then restart the API.
         </div>
       )}
 

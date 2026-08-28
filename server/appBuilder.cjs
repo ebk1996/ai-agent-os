@@ -196,7 +196,7 @@ async function compileReact(files) {
     const outfile = path.join(tmp, "dist/app.js");
     fs.mkdirSync(path.dirname(outfile), { recursive: true });
     await esbuild.build({
-      absWorkingDirectory: tmp,
+      absWorkingDir: tmp,
       entryPoints: [entry],
       bundle: true,
       format: "iife",

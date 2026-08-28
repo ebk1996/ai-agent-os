@@ -156,6 +156,66 @@ spec:
               name: stripe-secrets
               key: ANTHROPIC_API_KEY
               optional: true
+        - name: GROQ_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: stripe-secrets
+              key: GROQ_API_KEY
+              optional: true
+        - name: OPENROUTER_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: stripe-secrets
+              key: OPENROUTER_API_KEY
+              optional: true
+        - name: CEREBRAS_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: stripe-secrets
+              key: CEREBRAS_API_KEY
+              optional: true
+        - name: MISTRAL_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: stripe-secrets
+              key: MISTRAL_API_KEY
+              optional: true
+        - name: DEEPSEEK_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: stripe-secrets
+              key: DEEPSEEK_API_KEY
+              optional: true
+        - name: TOGETHER_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: stripe-secrets
+              key: TOGETHER_API_KEY
+              optional: true
+        - name: NVIDIA_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: stripe-secrets
+              key: NVIDIA_API_KEY
+              optional: true
+        - name: OPENAI_COMPAT_BASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: stripe-secrets
+              key: OPENAI_COMPAT_BASE_URL
+              optional: true
+        - name: OPENAI_COMPAT_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: stripe-secrets
+              key: OPENAI_COMPAT_API_KEY
+              optional: true
+        - name: OPENAI_COMPAT_MODEL
+          valueFrom:
+            secretKeyRef:
+              name: stripe-secrets
+              key: OPENAI_COMPAT_MODEL
+              optional: true
 ---
 apiVersion: v1
 kind: Service

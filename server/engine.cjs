@@ -1054,6 +1054,75 @@ async function seed() {
     console.log("Seeded AGENT007 homepage at /w/agent007");
   }
 
+  if ((await Site.countDocuments({ slug: "client-board" })) === 0) {
+    const title = "Client Board";
+    const slug = "client-board";
+    const files = appBuilder.mergeFiles(
+      [
+        {
+          path: "src/App.jsx",
+          content: `import { useEffect, useState } from "react";
+import { api } from "./agent007";
+
+export default function App() {
+  const [items, setItems] = useState([]);
+  const [name, setName] = useState("");
+  const [note, setNote] = useState("");
+  useEffect(() => {
+    api.list("clients").then((d) => setItems(d.records || [])).catch(() => setItems([]));
+  }, []);
+  async function add(e) {
+    e.preventDefault();
+    if (!name.trim()) return;
+    const row = await api.save("clients", { name, note });
+    setItems((x) => [row.record, ...x]);
+    setName("");
+    setNote("");
+  }
+  return (
+    <main style={{ maxWidth: 760, margin: "0 auto", padding: "48px 20px" }}>
+      <p style={{ letterSpacing: 2, fontSize: 11, color: "#9d95ff" }}>AGENT007 · REACT + VITE</p>
+      <h1 style={{ fontSize: 42, letterSpacing: -1 }}>Client Board</h1>
+      <p style={{ color: "#8b97ad" }}>A fullstack Vite app. Entries save to the AGENT007 API. Download the zip and run npm install && npm run dev.</p>
+      <form onSubmit={add} style={{ display: "grid", gap: 8, margin: "24px 0" }}>
+        <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Client name" style={{ padding: 12, borderRadius: 8 }} />
+        <input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Note" style={{ padding: 12, borderRadius: 8 }} />
+        <button type="submit" style={{ padding: 12, borderRadius: 8, background: "#7b6cff", color: "#fff", border: 0 }}>Save client</button>
+      </form>
+      <ul style={{ padding: 0, listStyle: "none" }}>
+        {items.map((it) => (
+          <li key={it.id} style={{ border: "1px solid #243049", borderRadius: 12, padding: 14, marginBottom: 8 }}>
+            <b>{it.data?.name}</b>
+            <div style={{ color: "#8b97ad", fontSize: 13 }}>{it.data?.note}</div>
+          </li>
+        ))}
+      </ul>
+    </main>
+  );
+}
+`
+        }
+      ],
+      slug,
+      title
+    );
+    const built = await appBuilder.compileReact(files);
+    await Site.create({
+      id: uid(),
+      slug,
+      title,
+      summary: "Fullstack React + Vite client tracker. Data persists on the AGENT007 API. Download the Vite project.",
+      html: appBuilder.spaShell({ title, slug, css: built.css }),
+      kind: "react-vite",
+      files,
+      bundleJs: built.js,
+      status: "live",
+      agent: "Developer Agent",
+      url: "/w/client-board"
+    });
+    console.log("Seeded React/Vite app at /w/client-board");
+  }
+
   const missions = await Mission.countDocuments();
   if (missions === 0) {
     await Mission.insertMany([
